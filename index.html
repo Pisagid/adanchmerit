@@ -204,8 +204,21 @@ tr:last-child td{border-bottom:0}
 .fees .src{text-align:center}
 
 /* videos */
-.vids{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-top:44px}
-.vids .vid{width:250px;max-width:100%}
+.carousel{position:relative;margin-top:44px}
+.vids{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 4px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.vids::-webkit-scrollbar{display:none}
+.vids .vid{flex:0 0 250px;scroll-snap-align:start;max-width:80vw}
+.vids .vid .new{position:absolute;margin:10px;background:var(--gold);color:#0B0F17;font:700 11px var(--body);letter-spacing:.08em;padding:5px 9px;border-radius:999px;z-index:2}
+.vid{position:relative}
+.cbtn{position:absolute;top:calc(50% - 40px);width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg);box-shadow:var(--shadow);display:grid;place-items:center;cursor:pointer;z-index:3}
+.cbtn svg{width:20px;height:20px}
+.cbtn.prev{left:-8px}.cbtn.next{right:-8px}
+.cbtn:disabled{opacity:.35;cursor:default}
+@media (max-width:600px){.cbtn{display:none}}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:6px}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:var(--line);cursor:pointer}
+.dots button[aria-current="true"]{background:var(--gold);width:24px;border-radius:5px}
+.vid{width:250px;max-width:100%}
 @media (max-width:600px){.vids .vid{width:calc(50% - 9px)}}
 @media (max-width:380px){.vids .vid{width:100%}}
 .vid{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);min-width:0}
@@ -581,14 +594,19 @@ body.locked{overflow:hidden}
   <div class="wrap">
     <h2 class="title">Videos</h2>
     <p class="title-sub">Short explainers you can watch and share.</p>
-    <div class="vids">
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster1.jpg" src="media/video1.mp4"></video><p>You may already qualify<small>The 5-point NIW check</small></p></div>
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster2.jpg" src="media/video2.mp4"></video><p>Amaka's story<small>Example profile, for illustration</small></p></div>
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster3.jpg" src="media/video3.mp4"></video><p>Why now<small>Complete from day one</small></p></div>
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster4.jpg" src="media/video4.mp4"></video><p>You fit qualify<small>In Pidgin, with English subtitles</small></p></div>
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster5.jpg" src="media/video5.mp4"></video><p>EB-1A: top of your field?<small>The 10 criteria in 26 seconds</small></p></div>
+    <div class="carousel" aria-roledescription="carousel" aria-label="Videos">
+      <button class="cbtn prev" type="button" aria-label="Previous video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="vids" id="vtrack" tabindex="0">
+      <div class="vid"><span class="new">NEW</span><video controls playsinline preload="none" poster="media/poster7.jpg" src="media/video7.mp4"></video><p>Ị nwere ike<small>In Igbo, with English subtitles</small></p></div>
       <div class="vid"><video controls playsinline preload="none" poster="media/poster6.jpg" src="media/video6.mp4"></video><p>Two routes, one free check<small>EB-2 NIW or EB-1A?</small></p></div>
-      <div class="vid"><video controls playsinline preload="none" poster="media/poster7.jpg" src="media/video7.mp4"></video><p>Ị nwere ike<small>In Igbo, with English subtitles</small></p></div>
+      <div class="vid"><video controls playsinline preload="none" poster="media/poster5.jpg" src="media/video5.mp4"></video><p>EB-1A: top of your field?<small>The 10 criteria in 26 seconds</small></p></div>
+      <div class="vid"><video controls playsinline preload="none" poster="media/poster4.jpg" src="media/video4.mp4"></video><p>You fit qualify<small>In Pidgin, with English subtitles</small></p></div>
+      <div class="vid"><video controls playsinline preload="none" poster="media/poster3.jpg" src="media/video3.mp4"></video><p>Why now<small>Complete from day one</small></p></div>
+      <div class="vid"><video controls playsinline preload="none" poster="media/poster2.jpg" src="media/video2.mp4"></video><p>Amaka's story<small>Example profile, for illustration</small></p></div>
+      <div class="vid"><video controls playsinline preload="none" poster="media/poster1.jpg" src="media/video1.mp4"></video><p>You may already qualify<small>The 5-point NIW check</small></p></div>
+      </div>
+      <button class="cbtn next" type="button" aria-label="Next video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="dots" id="vdots" aria-label="Choose video"></div>
     </div>
   </div>
 </section>
@@ -690,6 +708,24 @@ body.locked{overflow:hidden}
   $('qform').addEventListener('change',score);$('qform').addEventListener('submit',e=>e.preventDefault());score();
   /* copy + chat tip */
   document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',async()=>{const t=$(b.dataset.copy);try{await navigator.clipboard.writeText(t.textContent);b.textContent='Copied'}catch(e){const r=document.createRange();r.selectNodeContents(t);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'}setTimeout(()=>b.textContent='Copy',1600)}));
+  /* video carousel: newest first, auto-slides until someone interacts */
+  (()=>{const tr=$('vtrack');if(!tr)return;const cards=[...tr.children],dots=$('vdots');let idx=0,timer=null,stopped=false;
+    cards.forEach((c,k)=>{const d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Video '+(k+1));d.addEventListener('click',()=>{stop();go(k)});dots.appendChild(d)});
+    const step=()=>cards[0].getBoundingClientRect().width+18;
+    const perView=()=>Math.max(1,Math.floor((tr.clientWidth+18)/step()));
+    const maxIdx=()=>Math.max(0,cards.length-perView());
+    function go(k){idx=Math.max(0,Math.min(k,maxIdx()));tr.scrollTo({left:idx*step(),behavior:reduce?'auto':'smooth'})}
+    function sync(){idx=Math.round(tr.scrollLeft/step());[...dots.children].forEach((d,k)=>{d.setAttribute('aria-current',k===idx?'true':'false');d.hidden=k>maxIdx()});
+      document.querySelector('.cbtn.prev').disabled=idx<=0;document.querySelector('.cbtn.next').disabled=idx>=maxIdx()}
+    function stop(){stopped=true;clearInterval(timer)}
+    document.querySelector('.cbtn.prev').addEventListener('click',()=>{stop();go(idx-1)});
+    document.querySelector('.cbtn.next').addEventListener('click',()=>{stop();go(idx+1)});
+    tr.addEventListener('scroll',()=>requestAnimationFrame(sync),{passive:true});
+    ['pointerdown','touchstart','wheel','keydown'].forEach(ev=>tr.addEventListener(ev,stop,{passive:true}));
+    tr.querySelectorAll('video').forEach(v=>v.addEventListener('play',()=>{stop();tr.querySelectorAll('video').forEach(o=>{if(o!==v)o.pause()})}));
+    window.addEventListener('resize',sync);sync();
+    if(!reduce)timer=setInterval(()=>{if(stopped||document.hidden)return;go(idx>=maxIdx()?0:idx+1)},4500);
+  })();
   $('tip-x').addEventListener('click',()=>$('tip').hidden=true);
 })();
 </script>
