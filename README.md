@@ -1,6 +1,6 @@
 # Adanch Merit Consulting — website
 
-EB-2 National Interest Waiver green card support for Nigerian and African professionals.
+EB-1A and EB-2 National Interest Waiver green card support for Nigerian and African professionals.
 
 Single static page, no build step:
 
