@@ -329,6 +329,30 @@ body.locked{overflow:hidden}
 :root[data-theme="dark"] .themebtn .moon{display:none}
 :root[data-theme="dark"] .themebtn .sun{display:block}
 @media (max-width:980px){.nav .themebtn{margin-left:auto}.nav .btn{margin-left:0}}
+
+/* enquiry form */
+.enq{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;margin-top:44px;align-items:start}
+@media (max-width:900px){.enq{grid-template-columns:1fr}}
+.enq-side{display:grid;gap:14px;min-width:0}
+.enq-side .pt{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.enq-side .pt i{width:36px;height:36px;border-radius:10px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font:700 15px var(--head);font-style:normal}
+.enq-side .pt b{display:block;font:700 15px var(--head)}
+.enq-side .pt span{font-size:14px;color:var(--muted)}
+form.ef{background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--gold);border-radius:18px;padding:26px;display:grid;gap:16px;box-shadow:var(--shadow);min-width:0}
+form.ef .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){form.ef .row{grid-template-columns:1fr}}
+form.ef label{display:grid;gap:6px;font:600 13.5px var(--body)}
+form.ef label em{font-style:normal;color:#C0392B}
+form.ef input,form.ef select,form.ef textarea{font:15px var(--body);padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%}
+form.ef textarea{min-height:100px;resize:vertical}
+form.ef input[type=file]{padding:9px;background:var(--soft)}
+form.ef .hint{font-weight:400;font-size:12.5px;color:var(--muted)}
+form.ef .consent{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:13.5px;line-height:1.45}
+form.ef .consent input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:var(--navy)}
+form.ef .err{color:#C0392B;font-size:13.5px}
+form.ef .note{font-size:13px;color:var(--muted);background:var(--soft);border-radius:10px;padding:10px 12px}
+form.ef .hp{position:absolute;left:-9999px}
+form.ef button[type=submit]{justify-self:start}
 </style>
 <style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -620,6 +644,46 @@ body.locked{overflow:hidden}
   </div>
 </section>
 
+<section id="enquire">
+  <div class="wrap">
+    <h2 class="title">Book your <span class="hl">free check</span></h2>
+    <p class="title-sub">Prefer email to WhatsApp? Send your details and CV here. We reply within two working days.</p>
+    <div class="enq">
+      <div class="enq-side">
+        <div class="pt"><i>1</i><div><b>Tell us about you</b><span>Your field, qualification and what you have achieved so far.</span></div></div>
+        <div class="pt"><i>2</i><div><b>Attach your CV</b><span>PDF or Word, up to 5 MB. It helps us give you a real answer.</span></div></div>
+        <div class="pt"><i>3</i><div><b>Get an honest read</b><span>We tell you whether EB-2 NIW, EB-1A or both could fit, and what is missing. Free.</span></div></div>
+        <div class="pt"><i>✓</i><div><b>Your details stay private</b><span>Used only to assess and reply to you. See our <a href="privacy.html">privacy policy</a>.</span></div></div>
+      </div>
+      <form class="ef" id="eform" action="https://formsubmit.co/adanchmerit@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" value="New free-check enquiry from the website">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://pisagid.github.io/adanchmerit/thanks.html">
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="row">
+          <label for="e-name">Full name <em>*</em><input id="e-name" name="Name" autocomplete="name" required></label>
+          <label for="e-email">Email <em>*</em><input id="e-email" name="email" type="email" autocomplete="email" required></label>
+        </div>
+        <div class="row">
+          <label for="e-phone">WhatsApp number<input id="e-phone" name="WhatsApp" type="tel" autocomplete="tel" placeholder="+234 …"></label>
+          <label for="e-country">Country you live in<input id="e-country" name="Country" autocomplete="country-name" placeholder="e.g. Nigeria"></label>
+        </div>
+        <div class="row">
+          <label for="e-field">Your field or job<input id="e-field" name="Field" placeholder="e.g. Petroleum engineer"></label>
+          <label for="e-deg">Highest qualification<select id="e-deg" name="Qualification"><option>Master's</option><option>PhD / MD / doctorate</option><option>Bachelor's + 5 years' experience</option><option>Bachelor's</option><option>Other</option></select></label>
+        </div>
+        <label for="e-route">Interested in<select id="e-route" name="Interested in"><option>Not sure — check me for both</option><option>EB-2 NIW</option><option>EB-1A</option></select></label>
+        <label for="e-cv">Your CV <span class="hint">(PDF or Word, max 5 MB, optional)</span><input id="e-cv" name="attachment" type="file" accept=".pdf,.doc,.docx"></label>
+        <label for="e-msg">Your main achievements or questions<textarea id="e-msg" name="Message" placeholder="Projects you led, awards, publications, what you want to do in the US…"></textarea></label>
+        <label class="consent" for="e-ok"><input id="e-ok" name="Consent" value="Agreed to privacy policy" type="checkbox" required><span>I agree that Adanch Merit Consulting may use these details to assess my eligibility and contact me, as described in the <a href="privacy.html">privacy policy</a>. <em>*</em></span></label>
+        <p class="err" id="e-err" hidden></p>
+        <p class="note" id="e-preview" hidden>This form sends from the live website. In this preview, message us on WhatsApp at +234 707 040 0146 instead.</p>
+        <button class="btn btn-dark" type="submit" id="e-send">Send my details</button>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section class="why" id="faq">
   <div class="wrap">
     <h2 class="title">FAQs</h2>
@@ -660,12 +724,12 @@ body.locked{overflow:hidden}
         </div>
         <div class="soc"><a href="https://www.facebook.com/adanchmerit" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/adanchmerit" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@adanchmerit" target="_blank" rel="noopener">TikTok</a><a href="https://www.youtube.com/@adanchmerit" target="_blank" rel="noopener">YouTube</a><a href="https://x.com/adanchmerit" target="_blank" rel="noopener">X</a></div>
       </div>
-      <nav class="flinks" aria-label="Footer"><a href="#routes">EB-1A &amp; NIW</a><a href="#evidence">Evidence</a><a href="#packages">Packages</a><a href="#videos">Videos</a><a href="#faq">FAQs</a></nav>
+      <nav class="flinks" aria-label="Footer"><a href="#enquire">Free check</a><a href="#routes">EB-1A &amp; NIW</a><a href="#evidence">Evidence</a><a href="#packages">Packages</a><a href="#videos">Videos</a><a href="#faq">FAQs</a></nav>
     </div>
     <div class="legal">
       <span class="tagline">Translating your professional achievements into <em>permanent US residency</em>.</span>
       <span>© 2026 Adanch Merit Consulting. All rights reserved.</span>
-      <span class="fine">Consulting services only, not legal representation.</span>
+      <span class="fine">Consulting services only, not legal representation. · <a href="privacy.html" style="color:inherit">Privacy policy</a></span>
     </div>
   </div>
 </footer>
@@ -739,6 +803,18 @@ body.locked{overflow:hidden}
   (()=>{const b=$('themebtn');if(!b)return;const set=t=>{document.documentElement.setAttribute('data-theme',t);b.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode');try{localStorage.setItem('am_theme',t)}catch(e){}};
     b.setAttribute('aria-label',document.documentElement.getAttribute('data-theme')==='dark'?'Switch to light mode':'Switch to dark mode');
     b.addEventListener('click',()=>set(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'))})();
+  /* enquiry form: validate, check file size, and only submit from the live site */
+  (()=>{const f=$('eform');if(!f)return;const LIVE=['pisagid.github.io','isaacgideonpoku.com','adanchmerit.com','www.adanchmerit.com'];
+    const live=LIVE.includes(location.hostname);if(!live)$('e-preview').hidden=false;
+    f.addEventListener('submit',e=>{const err=$('e-err');err.hidden=true;
+      const fail=m=>{e.preventDefault();err.textContent=m;err.hidden=false};
+      if(!$('e-name').value.trim())return fail('Please enter your full name.');
+      if(!$('e-email').checkValidity()||!$('e-email').value.trim())return fail('Please enter a valid email address so we can reply.');
+      const cv=$('e-cv').files[0];if(cv&&cv.size>5*1024*1024)return fail('Your CV is larger than 5 MB. Please attach a smaller file or send it on WhatsApp.');
+      if(!$('e-ok').checked)return fail('Please tick the box to agree to the privacy policy.');
+      if(!live){e.preventDefault();$('e-preview').hidden=false;return}
+      $('e-send').textContent='Sending…';$('e-send').disabled=true});
+  })();
   $('tip-x').addEventListener('click',()=>$('tip').hidden=true);
 })();
 </script>
